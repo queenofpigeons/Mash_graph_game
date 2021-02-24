@@ -124,6 +124,7 @@ int main(int argc, char** argv)
 //	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+  // make the window smaller due to high resolution display
   GLFWwindow*  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "task1 base project", nullptr, nullptr);
 	if (window == nullptr)
 	{
@@ -152,6 +153,13 @@ int main(int argc, char** argv)
 
 	Image img("../resources/tex.png");
 	Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
+
+
+  for (int i = 0; i < img.Width() ; i++) {
+    for (int j = 0; j < img.Height(); j++) {
+      screenBuffer.PutPixel(i, j, img.GetPixel(i, j));
+    }
+  }
 
   glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);  GL_CHECK_ERRORS;
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); GL_CHECK_ERRORS;
