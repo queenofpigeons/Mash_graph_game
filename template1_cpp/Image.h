@@ -3,7 +3,16 @@
 
 #include <string>
 
-constexpr int tileSize = 16;
+constexpr int tileSize = 24;
+constexpr int lvl_width = 40;
+constexpr int lvl_height = 40;
+
+enum tiles {
+  Wall,
+  Floor,
+  Player,
+  Empty
+};
 
 struct Pixel
 {
@@ -29,7 +38,6 @@ struct Image
   Pixel* Data()        { return  data; }
 
   Pixel GetPixel(int x, int y) {
-    assert(y <= height && x <= width);
     return data[width * y + x];
     }
   void  PutPixel(int x, int y, const Pixel &pix) { data[width * y + x] = pix; }
@@ -44,7 +52,5 @@ private:
   Pixel *data = nullptr;
   bool self_allocated = false;
 };
-
-
 
 #endif //MAIN_IMAGE_H

@@ -6,7 +6,7 @@
 #include "stb_image_write.h"
 
 #include <iostream>
-
+#include <fstream>
 
 Image::Image(const std::string &a_path)
 {
@@ -61,3 +61,12 @@ Image::~Image()
     stbi_image_free(data);
   }
 }
+
+/* void processLvlmap(Image &background, const std::string &lvl_path) {
+  std::ifstream input;
+  input.open(lvl_path);
+  for (int i = 0; i < 40; i++){
+    std::string line;
+    getline(input, line);
+  }
+} */

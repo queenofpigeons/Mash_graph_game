@@ -5,7 +5,7 @@
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
 
-constexpr GLsizei WINDOW_WIDTH = 512, WINDOW_HEIGHT = 512;
+constexpr GLsizei WINDOW_WIDTH = 960, WINDOW_HEIGHT = 960;
 
 struct InputState
 {
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
   // make the window smaller due to high resolution display
-  GLFWwindow*  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "task1 base project", nullptr, nullptr);
+  GLFWwindow*  window = glfwCreateWindow(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, "task1 base project", nullptr, nullptr);
 	if (window == nullptr)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -153,11 +153,12 @@ int main(int argc, char** argv)
 
 	Image img("../resources/tex.png");
 	Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
+  Image background(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
-
-  for (int i = 0; i < img.Width() ; i++) {
-    for (int j = 0; j < img.Height(); j++) {
-      screenBuffer.PutPixel(i, j, img.GetPixel(i, j));
+  for (int i = 0; i < WINDOW_WIDTH; i++) {
+    for (int j = 0; j < WINDOW_HEIGHT; j++) {
+      screenBuffer.PutPixel(i, j, img.GetPixel(i,j));
+      background.PutPixel(i, j, img.GetPixel(i,j));
     }
   }
 
@@ -173,7 +174,7 @@ int main(int argc, char** argv)
     glfwPollEvents();
 
     processPlayerMovement(player);
-    player.Draw(screenBuffer);
+    player.Draw(screenBuffer, background);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); GL_CHECK_ERRORS;
     glDrawPixels (WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, screenBuffer.Data()); GL_CHECK_ERRORS;
