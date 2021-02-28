@@ -54,7 +54,7 @@ void Player::Draw(Image &screen, Image &background, Image &playerImage)
   {
     for(int x = coords.x; x < coords.x + tileSize; ++x)
     {
-      screen.PutPixel(x, y, playerImage.GetPixel(x -  coords.x, tileSize - y + coords.y));
+      screen.PutPixel(x, y, blend(screen.GetPixel(x, y), playerImage.GetPixel(x -  coords.x, tileSize - y + coords.y)));
     }
   }
 }

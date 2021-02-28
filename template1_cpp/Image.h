@@ -14,6 +14,7 @@ struct Pixel
 };
 
 constexpr Pixel backgroundColor{0, 0, 0, 0};
+Pixel blend(Pixel oldPixel, Pixel newPixel);
 
 struct Image
 {

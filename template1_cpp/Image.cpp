@@ -7,6 +7,15 @@
 
 #include <iostream>
 
+Pixel blend(Pixel oldPixel, Pixel newPixel)
+{
+newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;
+newPixel.g = newPixel.a / 255.0 * (newPixel.g - oldPixel.g) + oldPixel.g;
+newPixel.b = newPixel.a / 255.0 * (newPixel.b - oldPixel.b) + oldPixel.b;
+newPixel.a = 255;
+
+return newPixel;
+}
 
 Image::Image(const std::string &a_path)
 {
