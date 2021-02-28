@@ -35,15 +35,16 @@ void Player::ProcessInput(MovementDir dir)
   }
 }
 
-void Player::Draw(Image &screen)
+void Player::Draw(Image &screen, Image &background, Image &playerImage)
 {
+
   if(Moved())
   {
     for(int y = old_coords.y; y < old_coords.y + tileSize; ++y)
     {
       for(int x = old_coords.x; x < old_coords.x + tileSize; ++x)
       {
-        screen.PutPixel(x, y, backgroundColor);
+        screen.PutPixel(x, y, background.GetPixel(x, y));
       }
     }
     old_coords = coords;
@@ -53,7 +54,7 @@ void Player::Draw(Image &screen)
   {
     for(int x = coords.x; x < coords.x + tileSize; ++x)
     {
-      screen.PutPixel(x, y, color);
+      screen.PutPixel(x, y, playerImage.GetPixel(x -  coords.x, tileSize - y + coords.y));
     }
   }
 }

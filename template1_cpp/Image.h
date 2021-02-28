@@ -3,7 +3,7 @@
 
 #include <string>
 
-constexpr int tileSize = 16;
+constexpr int tileSize = 24;
 
 struct Pixel
 {
@@ -29,7 +29,6 @@ struct Image
   Pixel* Data()        { return  data; }
 
   Pixel GetPixel(int x, int y) {
-    assert(y <= height && x <= width);
     return data[width * y + x];
     }
   void  PutPixel(int x, int y, const Pixel &pix) { data[width * y + x] = pix; }
