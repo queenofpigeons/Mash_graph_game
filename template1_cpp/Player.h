@@ -23,7 +23,7 @@ struct Player
                  coords(pos), old_coords(coords) {};
 
   bool Moved() const;
-  void ProcessInput(MovementDir dir);
+  void ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap);
   void Draw(Image &screen, Image &background, MovementDir dir);
 
 private:

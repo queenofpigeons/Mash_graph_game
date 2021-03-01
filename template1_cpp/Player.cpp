@@ -1,5 +1,6 @@
 #include "Player.h"
 
+#include <vector>
 
 bool Player::Moved() const
 {
@@ -9,27 +10,44 @@ bool Player::Moved() const
     return true;
 }
 
-void Player::ProcessInput(MovementDir dir)
+void Player::ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap)
 {
-  int currTileX = this->coords.x/tileSize;
-  int currTileY = this->coords.y/tileSize;
-  //if 
+  int currTileX = this->coords.x / tileSize;
+  int currTileY = this->coords.y / tileSize;
+  if (charMap[currTileX][currTileY] == '#')
+    return;
   int move_dist = move_speed * 1;
   switch(dir)
   {
     case MovementDir::UP:
+      if (charMap[currTileX][(coords.y + move_dist) / tileSize] == '#')
+        return;
+      if (charMap[currTileX][(coords.y + tileSize - 1 + move_dist) / tileSize] == '#')
+        return;
       old_coords.y = coords.y;
       coords.y += move_dist;
       break;
     case MovementDir::DOWN:
+      if (charMap[currTileX][(coords.y - move_dist) / tileSize] == '#')
+        return;
+      if (charMap[currTileX][(coords.y + tileSize - 1 - move_dist) / tileSize] == '#')
+        return;
       old_coords.y = coords.y;
       coords.y -= move_dist;
       break;
     case MovementDir::LEFT:
+      if (charMap[(coords.x - move_dist) / tileSize][currTileY] == '#')
+        return;
+      if (charMap[(coords.x + tileSize - 1 - move_dist) / tileSize][currTileY] == '#')
+        return;
       old_coords.x = coords.x;
       coords.x -= move_dist;
       break;
     case MovementDir::RIGHT:
+      if (charMap[(coords.x + move_dist) / tileSize][currTileY] == '#')
+        return;
+      if (charMap[(coords.x + tileSize - 1 + move_dist) / tileSize][currTileY] == '#')
+        return;
       old_coords.x = coords.x;
       coords.x += move_dist;
       break;

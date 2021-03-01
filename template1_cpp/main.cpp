@@ -44,19 +44,19 @@ void OnKeyboardPressed(GLFWwindow* window, int key, int scancode, int action, in
 	}
 }
 
-void processPlayerMovement(Player &player, MovementDir &dir)
+void processPlayerMovement(Player &player, MovementDir &dir, std::vector<std::vector<char>> &charMap)
 {
   if (Input.keys[GLFW_KEY_W]) {
-    player.ProcessInput(MovementDir::UP);
+    player.ProcessInput(MovementDir::UP, charMap);
     dir = MovementDir::UP;
   } else if (Input.keys[GLFW_KEY_S]) {
-    player.ProcessInput(MovementDir::DOWN);
+    player.ProcessInput(MovementDir::DOWN, charMap);
     dir = MovementDir::DOWN;
   } if (Input.keys[GLFW_KEY_A]) {
-    player.ProcessInput(MovementDir::LEFT);
+    player.ProcessInput(MovementDir::LEFT, charMap);
     dir = MovementDir::LEFT;
   } else if (Input.keys[GLFW_KEY_D]) {
-    player.ProcessInput(MovementDir::RIGHT);
+    player.ProcessInput(MovementDir::RIGHT, charMap);
     dir = MovementDir::RIGHT;
   }
 }
@@ -186,7 +186,7 @@ int main(int argc, char** argv)
 		lastFrame = currentFrame;
     glfwPollEvents();
 
-    processPlayerMovement(player, dir);
+    processPlayerMovement(player, dir, charMap);
     player.Draw(screenBuffer, background, dir);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); GL_CHECK_ERRORS;
