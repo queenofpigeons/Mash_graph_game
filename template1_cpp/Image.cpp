@@ -85,7 +85,6 @@ void drawMapFromFile(const std::string &f_path, Image &background) {
     int x = 0;
     std::string line;
     getline(input, line);
-    std::cout << line.size() << std::endl;
     for (int i = 0; i < line.size(); i++) {
       charMap[x][y] = line[i];
       switch (line[i]) {
