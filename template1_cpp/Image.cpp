@@ -87,6 +87,7 @@ Image::~Image()
 void initLevel(const std::string &f_path, Image &background, int &starting_x, int &starting_y, std::vector<std::vector<char>> &charMap) {
   Image Wall("../resources/wall.png");
   Image Floor("../resources/floor.png");
+  Image Lava("../resources/lava.png");
   //std::vector<std::vector<char>> charMap(lvlHeight, std::vector<char>(lvlWidth));
   std::ifstream input;
   input.open(f_path);
@@ -105,6 +106,15 @@ void initLevel(const std::string &f_path, Image &background, int &starting_x, in
             for(int x_draw = 0; x_draw < tileSize; ++x_draw)
             {
               background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, Wall.GetPixel(x_draw, y_draw));
+            }
+          }
+          break;
+        case ' ':
+          for(int y_draw = 0; y_draw < tileSize; ++y_draw)
+          {
+            for(int x_draw = 0; x_draw < tileSize; ++x_draw)
+            {
+              background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, Lava.GetPixel(x_draw, y_draw));
             }
           }
           break;
