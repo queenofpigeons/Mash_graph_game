@@ -83,12 +83,25 @@ Image::~Image()
   }
 }
 
+/*
+ * drawTile takes x and y in tile coordinates, not in pixels, so it can't be used to draw character sprite
+ */
+void drawTile(int x, int y, Image &tile, Image &background) {
+  for(int y_draw = 0; y_draw < tileSize; ++y_draw)
+  {
+    for(int x_draw = 0; x_draw < tileSize; ++x_draw)
+    {
+      background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, tile.GetPixel(x_draw, y_draw));
+    }
+  }
+}
+
 
 void initLevel(const std::string &f_path, Image &background, int &starting_x, int &starting_y, std::vector<std::vector<char>> &charMap) {
   Image Wall("../resources/wall.png");
   Image Floor("../resources/floor.png");
   Image Lava("../resources/lava.png");
-  //std::vector<std::vector<char>> charMap(lvlHeight, std::vector<char>(lvlWidth));
+
   std::ifstream input;
   input.open(f_path);
 
@@ -101,34 +114,16 @@ void initLevel(const std::string &f_path, Image &background, int &starting_x, in
       charMap[x][y] = line[i];
       switch (line[i]) {
         case '#':
-          for(int y_draw = 0; y_draw < tileSize; ++y_draw)
-          {
-            for(int x_draw = 0; x_draw < tileSize; ++x_draw)
-            {
-              background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, Wall.GetPixel(x_draw, y_draw));
-            }
-          }
+          drawTile(x, y, Wall, background);
           break;
         case ' ':
-          for(int y_draw = 0; y_draw < tileSize; ++y_draw)
-          {
-            for(int x_draw = 0; x_draw < tileSize; ++x_draw)
-            {
-              background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, Lava.GetPixel(x_draw, y_draw));
-            }
-          }
+          drawTile(x, y, Lava, background);
           break;
         case '@':
           starting_x = x * tileSize;
           starting_y = y * tileSize;
         case '.':
-          for(int y_draw = 0; y_draw < tileSize; ++y_draw)
-          {
-            for(int x_draw = 0; x_draw < tileSize; ++x_draw)
-            {
-              background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, Floor.GetPixel(x_draw, y_draw));
-            }
-          }
+          drawTile(x, y, Floor, background);
           break;
         default:
           break;
