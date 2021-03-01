@@ -6,15 +6,17 @@
 #include "stb_image_write.h"
 
 #include <iostream>
+#include <fstream>
+#include <vector>
 
 Pixel blend(Pixel oldPixel, Pixel newPixel)
 {
-newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;
-newPixel.g = newPixel.a / 255.0 * (newPixel.g - oldPixel.g) + oldPixel.g;
-newPixel.b = newPixel.a / 255.0 * (newPixel.b - oldPixel.b) + oldPixel.b;
-newPixel.a = 255;
+  newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;
+  newPixel.g = newPixel.a / 255.0 * (newPixel.g - oldPixel.g) + oldPixel.g;
+  newPixel.b = newPixel.a / 255.0 * (newPixel.b - oldPixel.b) + oldPixel.b;
+  newPixel.a = 255;
 
-return newPixel;
+  return newPixel;
 }
 
 Image::Image(const std::string &a_path)
@@ -69,4 +71,48 @@ Image::~Image()
   {
     stbi_image_free(data);
   }
+}
+
+void drawMapFromFile(const std::string &f_path, Image &background) {
+  Image Wall("../resources/wall.png");
+  Image Floor("../resources/floor.png");
+  std::vector<std::vector<char>> charMap(lvlHeight, std::vector<char>(lvlWidth));
+  std::ifstream input;
+  input.open(f_path);
+
+  int y = 0;
+  while (!input.eof()) {
+    int x = 0;
+    std::string line;
+    getline(input, line);
+    std::cout << line.size() << std::endl;
+    for (int i = 0; i < line.size(); i++) {
+      charMap[x][y] = line[i];
+      switch (line[i]) {
+        case '#':
+          for(int y_draw = 0; y_draw < tileSize; ++y_draw)
+          {
+            for(int x_draw = 0; x_draw < tileSize; ++x_draw)
+            {
+              background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, Wall.GetPixel(x_draw, y_draw));
+            }
+          }
+          break;
+        case '.':
+          for(int y_draw = 0; y_draw < tileSize; ++y_draw)
+          {
+            for(int x_draw = 0; x_draw < tileSize; ++x_draw)
+            {
+              background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, Floor.GetPixel(x_draw, y_draw));
+            }
+          }
+          break;
+        default:
+          break;
+      }
+      x++;
+    }
+    y++;
+  }
+  input.close();
 }

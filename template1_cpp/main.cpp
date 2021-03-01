@@ -5,7 +5,7 @@
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
 
-constexpr GLsizei WINDOW_WIDTH = 512, WINDOW_HEIGHT = 512;
+constexpr GLsizei WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 1280;
 
 struct InputState
 {
@@ -152,15 +152,14 @@ int main(int argc, char** argv)
 	Player player{starting_pos};
 
 	Image img("../resources/tex.png");
-  Image playerImg("../resources/player.png");
+  Image playerImg("../resources/tile007.png");
 	Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
   Image background(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
-
-  for (int i = 0; i < img.Width() ; i++) {
-    for (int j = 0; j < img.Height(); j++) {
-      screenBuffer.PutPixel(i, j, img.GetPixel(i, j));
-      background.PutPixel(i, j, img.GetPixel(i, j));
+  drawMapFromFile("../resources/lvl1.txt", background);
+  for (int i = 0; i < background.Width() ; i++) {
+    for (int j = 0; j < background.Height(); j++) {
+      screenBuffer.PutPixel(i, j, background.GetPixel(i, j));
     }
   }
 

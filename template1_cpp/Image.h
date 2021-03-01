@@ -3,7 +3,9 @@
 
 #include <string>
 
-constexpr int tileSize = 24;
+constexpr int tileSize = 32;
+constexpr int lvlWidth = 40;
+constexpr int lvlHeight = 40;
 
 struct Pixel
 {
@@ -45,6 +47,6 @@ private:
   bool self_allocated = false;
 };
 
-
+void drawMapFromFile(const std::string &f_path, Image &background);
 
 #endif //MAIN_IMAGE_H

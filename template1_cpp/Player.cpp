@@ -58,3 +58,4 @@ void Player::Draw(Image &screen, Image &background, Image &playerImage)
     }
   }
 }
+
