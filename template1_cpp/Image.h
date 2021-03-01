@@ -47,6 +47,6 @@ private:
   bool self_allocated = false;
 };
 
-void drawMapFromFile(const std::string &f_path, Image &background);
+void drawMapFromFile(const std::string &f_path, Image &background, int &x, int &y);
 
 #endif //MAIN_IMAGE_H

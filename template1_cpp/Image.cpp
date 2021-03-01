@@ -73,7 +73,8 @@ Image::~Image()
   }
 }
 
-void drawMapFromFile(const std::string &f_path, Image &background) {
+
+void drawMapFromFile(const std::string &f_path, Image &background, int &starting_x, int &starting_y) {
   Image Wall("../resources/wall.png");
   Image Floor("../resources/floor.png");
   std::vector<std::vector<char>> charMap(lvlHeight, std::vector<char>(lvlWidth));
@@ -97,6 +98,9 @@ void drawMapFromFile(const std::string &f_path, Image &background) {
             }
           }
           break;
+        case '@':
+          starting_x = x * tileSize;
+          starting_y = y * tileSize;
         case '.':
           for(int y_draw = 0; y_draw < tileSize; ++y_draw)
           {

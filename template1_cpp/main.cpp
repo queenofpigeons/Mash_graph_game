@@ -148,20 +148,24 @@ int main(int argc, char** argv)
 	while (gl_error != GL_NO_ERROR)
 		gl_error = glGetError();
 
-	Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
-	Player player{starting_pos};
+	//Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
 
 	Image img("../resources/tex.png");
   Image playerImg("../resources/tile007.png");
 	Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
   Image background(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
-  drawMapFromFile("../resources/lvl1.txt", background);
+  int starting_x, starting_y;
+
+  drawMapFromFile("../resources/lvl1.txt", background, starting_x, starting_y);
   for (int i = 0; i < background.Width() ; i++) {
     for (int j = 0; j < background.Height(); j++) {
       screenBuffer.PutPixel(i, j, background.GetPixel(i, j));
     }
   }
+
+  Point starting_pos{.x = starting_x, .y = starting_y};
+  Player player{starting_pos};
 
   glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);  GL_CHECK_ERRORS;
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); GL_CHECK_ERRORS;
