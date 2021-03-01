@@ -47,6 +47,6 @@ private:
   bool self_allocated = false;
 };
 
-void drawMapFromFile(const std::string &f_path, Image &background, int &x, int &y);
+void initLevel(const std::string &f_path, Image &background, int &x, int &y, std::vector<std::vector<char>> &charMap);
 
 #endif //MAIN_IMAGE_H

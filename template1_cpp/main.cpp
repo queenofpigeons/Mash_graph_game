@@ -4,6 +4,7 @@
 
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
+#include <vector>
 
 constexpr GLsizei WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 1280;
 
@@ -43,16 +44,21 @@ void OnKeyboardPressed(GLFWwindow* window, int key, int scancode, int action, in
 	}
 }
 
-void processPlayerMovement(Player &player)
+void processPlayerMovement(Player &player, MovementDir &dir)
 {
-  if (Input.keys[GLFW_KEY_W])
+  if (Input.keys[GLFW_KEY_W]) {
     player.ProcessInput(MovementDir::UP);
-  else if (Input.keys[GLFW_KEY_S])
+    dir = MovementDir::UP;
+  } else if (Input.keys[GLFW_KEY_S]) {
     player.ProcessInput(MovementDir::DOWN);
-  if (Input.keys[GLFW_KEY_A])
+    dir = MovementDir::DOWN;
+  } if (Input.keys[GLFW_KEY_A]) {
     player.ProcessInput(MovementDir::LEFT);
-  else if (Input.keys[GLFW_KEY_D])
+    dir = MovementDir::LEFT;
+  } else if (Input.keys[GLFW_KEY_D]) {
     player.ProcessInput(MovementDir::RIGHT);
+    dir = MovementDir::RIGHT;
+  }
 }
 
 void OnMouseButtonClicked(GLFWwindow* window, int button, int action, int mods)
@@ -156,8 +162,9 @@ int main(int argc, char** argv)
   Image background(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
   int starting_x, starting_y;
+  std::vector<std::vector<char>> charMap(lvlHeight, std::vector<char>(lvlWidth));
 
-  drawMapFromFile("../resources/lvl1.txt", background, starting_x, starting_y);
+  initLevel("../resources/lvl1.txt", background, starting_x, starting_y, charMap);
   for (int i = 0; i < background.Width() ; i++) {
     for (int j = 0; j < background.Height(); j++) {
       screenBuffer.PutPixel(i, j, background.GetPixel(i, j));
@@ -170,6 +177,7 @@ int main(int argc, char** argv)
   glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);  GL_CHECK_ERRORS;
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); GL_CHECK_ERRORS;
 
+  MovementDir dir = MovementDir::DOWN;
   //game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -178,8 +186,8 @@ int main(int argc, char** argv)
 		lastFrame = currentFrame;
     glfwPollEvents();
 
-    processPlayerMovement(player);
-    player.Draw(screenBuffer, background, playerImg);
+    processPlayerMovement(player, dir);
+    player.Draw(screenBuffer, background, dir);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); GL_CHECK_ERRORS;
     glDrawPixels (WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, screenBuffer.Data()); GL_CHECK_ERRORS;

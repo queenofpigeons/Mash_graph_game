@@ -19,6 +19,16 @@ Pixel blend(Pixel oldPixel, Pixel newPixel)
   return newPixel;
 }
 
+Pixel blendScreen(Pixel oldPixel, Pixel newPixel)
+{
+  newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;
+  newPixel.g = newPixel.a / 255.0 * (newPixel.g - oldPixel.g) + oldPixel.g;
+  newPixel.b = newPixel.a / 255.0 * (newPixel.b - oldPixel.b) + oldPixel.b;
+  newPixel.a = 255;
+
+  return newPixel;
+}
+
 Image::Image(const std::string &a_path)
 {
   if((data = (Pixel*)stbi_load(a_path.c_str(), &width, &height, &channels, 4)) != nullptr)
@@ -74,10 +84,10 @@ Image::~Image()
 }
 
 
-void drawMapFromFile(const std::string &f_path, Image &background, int &starting_x, int &starting_y) {
+void initLevel(const std::string &f_path, Image &background, int &starting_x, int &starting_y, std::vector<std::vector<char>> &charMap) {
   Image Wall("../resources/wall.png");
   Image Floor("../resources/floor.png");
-  std::vector<std::vector<char>> charMap(lvlHeight, std::vector<char>(lvlWidth));
+  //std::vector<std::vector<char>> charMap(lvlHeight, std::vector<char>(lvlWidth));
   std::ifstream input;
   input.open(f_path);
 

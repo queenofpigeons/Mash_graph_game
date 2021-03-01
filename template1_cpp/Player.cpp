@@ -11,6 +11,9 @@ bool Player::Moved() const
 
 void Player::ProcessInput(MovementDir dir)
 {
+  int currTileX = this->coords.x/tileSize;
+  int currTileY = this->coords.y/tileSize;
+  //if 
   int move_dist = move_speed * 1;
   switch(dir)
   {
@@ -35,8 +38,12 @@ void Player::ProcessInput(MovementDir dir)
   }
 }
 
-void Player::Draw(Image &screen, Image &background, Image &playerImage)
+void Player::Draw(Image &screen, Image &background, MovementDir dir)
 {
+  Image playerImgFront("../resources/tile007.png");
+  Image playerImgLeft("../resources/tile019.png");
+  Image playerImgRight("../resources/tile031.png");
+  Image playerImgBack("../resources/tile043.png");
 
   if(Moved())
   {
@@ -50,11 +57,25 @@ void Player::Draw(Image &screen, Image &background, Image &playerImage)
     old_coords = coords;
   }
 
-  for(int y = coords.y; y < coords.y + tileSize; ++y)
+  for(int y = coords.y + 1; y < coords.y + tileSize; ++y)
   {
-    for(int x = coords.x; x < coords.x + tileSize; ++x)
+    for(int x = coords.x + 1; x < coords.x + tileSize; ++x)
     {
-      screen.PutPixel(x, y, blend(screen.GetPixel(x, y), playerImage.GetPixel(x -  coords.x, tileSize - y + coords.y)));
+      switch (dir)
+      {
+      case MovementDir::UP:
+        screen.PutPixel(x, y, blend(screen.GetPixel(x, y), playerImgBack.GetPixel(x -  coords.x, tileSize - y + coords.y)));
+        break;
+      case MovementDir::RIGHT:
+        screen.PutPixel(x, y, blend(screen.GetPixel(x, y), playerImgRight.GetPixel(x -  coords.x, tileSize - y + coords.y)));
+        break;
+      case MovementDir::LEFT:
+        screen.PutPixel(x, y, blend(screen.GetPixel(x, y), playerImgLeft.GetPixel(x -  coords.x, tileSize - y + coords.y)));
+        break;
+      default:
+        screen.PutPixel(x, y, blend(screen.GetPixel(x, y), playerImgFront.GetPixel(x -  coords.x, tileSize - y + coords.y)));
+        break;
+      }
     }
   }
 }
