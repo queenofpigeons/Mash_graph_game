@@ -17,6 +17,11 @@ void Player::ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charM
   int addX = this->coords.x % tileSize ? 1 : 0;
   int addY = this->coords.y % tileSize ? 1 : 0;
 
+  if (charMap[currTileX][currTileY] == ' ') {
+    this->Dead = true;
+    return;
+  }
+
   if (act == Action::MOVE) {
     if (charMap[currTileX][currTileY] == '#')
       return;
@@ -73,6 +78,10 @@ void Player::Draw(Image &screen, Image &background, MovementDir dir)
   Image playerImgLeft("../resources/tile019.png");
   Image playerImgRight("../resources/tile031.png");
   Image playerImgBack("../resources/tile043.png");
+
+  if(Dead) {
+    return;
+  }
 
   if(Moved())
   {

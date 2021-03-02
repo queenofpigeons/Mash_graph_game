@@ -5,6 +5,7 @@
 #define GLFW_DLL
 #include <GLFW/glfw3.h>
 #include <vector>
+#include <unistd.h>
 
 constexpr GLsizei WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 1280;
 
@@ -123,6 +124,27 @@ int initGL()
 	return 0;
 }
 
+void fadeToBlack(Image &screen, const std::string &text, GLFWwindow* window) {
+  int fade_time = 100;
+  Image fading_screen(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
+  for (int k = 0; k < fade_time; k++) {
+    for (int i = 0; i < WINDOW_WIDTH ; i++) {
+      for (int j = 0; j < WINDOW_HEIGHT; j++) {
+        Pixel p = screen.GetPixel(i, j);
+        int coef = 1 - 1 / fade_time * k;
+        p.r *= coef;
+        p.g *= coef;
+        p.b *= coef;
+        p.a *= coef;
+        fading_screen.PutPixel(i, j, p);
+      }
+    }
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); GL_CHECK_ERRORS;
+    glDrawPixels (WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, fading_screen.Data()); GL_CHECK_ERRORS;
+    glfwSwapBuffers(window);
+  }
+}
+
 int main(int argc, char** argv)
 {
 	if(!glfwInit())
@@ -161,6 +183,7 @@ int main(int argc, char** argv)
 
 	Image img("../resources/tex.png");
   Image playerImg("../resources/tile007.png");
+  Image dead("../resources/dead.png");
 	Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
   Image background(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
@@ -191,6 +214,15 @@ int main(int argc, char** argv)
     glfwPollEvents();
 
     processPlayerMovement(player, dir, charMap, background);
+    if (player.Dead) {
+      for(int y_draw = 0; y_draw < dead.Height(); ++y_draw)
+      {
+        for(int x_draw = 0; x_draw < dead.Width(); ++x_draw)
+        {
+          screenBuffer.PutPixel(WINDOW_WIDTH / 2 + x_draw, WINDOW_WIDTH - (WINDOW_WIDTH / 2 + y_draw), blend(background.GetPixel(WINDOW_WIDTH / 2 + x_draw, WINDOW_WIDTH / 2 + y_draw), dead.GetPixel(x_draw, y_draw)));
+        }
+      }
+    }
     player.Draw(screenBuffer, background, dir);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); GL_CHECK_ERRORS;

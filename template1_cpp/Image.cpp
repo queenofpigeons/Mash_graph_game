@@ -96,11 +96,6 @@ void drawTile(int x, int y, Image &tile, Image &background) {
   }
 }
 
-void fadeToBlack(Image &screen, Image &background, std::string &text) {
-  int fade_time = 100;
-  for (int i = 0; i < fade_time; i++) {}
-}
-
 
 void initLevel(const std::string &f_path, Image &background, int &starting_x, int &starting_y, std::vector<std::vector<char>> &charMap) {
   Image Wall("../resources/wall.png");

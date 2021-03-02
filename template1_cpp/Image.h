@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <GLFW/glfw3.h>
 
 constexpr int tileSize = 32;
 constexpr int lvlWidth = 40;
@@ -49,7 +50,6 @@ private:
 };
 
 void drawTile(int x, int y, Image &tile, Image &background);
-void fadeToBlack(Image &screen, Image &background, std::string &text);
 void initLevel(const std::string &f_path, Image &background, int &x, int &y, std::vector<std::vector<char>> &charMap);
 
 #endif //MAIN_IMAGE_H

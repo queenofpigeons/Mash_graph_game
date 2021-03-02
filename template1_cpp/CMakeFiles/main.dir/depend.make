@@ -9,10 +9,12 @@ CMakeFiles/main.dir/Image.cpp.o: Image.cpp
 CMakeFiles/main.dir/Image.cpp.o: Image.h
 CMakeFiles/main.dir/Image.cpp.o: stb_image.h
 CMakeFiles/main.dir/Image.cpp.o: stb_image_write.h
+CMakeFiles/main.dir/Image.cpp.o: /usr/local/include/GLFW/glfw3.h
 
 CMakeFiles/main.dir/Player.cpp.o: Image.h
 CMakeFiles/main.dir/Player.cpp.o: Player.cpp
 CMakeFiles/main.dir/Player.cpp.o: Player.h
+CMakeFiles/main.dir/Player.cpp.o: /usr/local/include/GLFW/glfw3.h
 
 CMakeFiles/main.dir/main.cpp.o: Image.h
 CMakeFiles/main.dir/main.cpp.o: Player.h

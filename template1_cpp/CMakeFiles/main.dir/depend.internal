@@ -10,10 +10,12 @@ CMakeFiles/main.dir/Image.cpp.o
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/Image.h
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/stb_image.h
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/stb_image_write.h
+ /usr/local/include/GLFW/glfw3.h
 CMakeFiles/main.dir/Player.cpp.o
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/Image.h
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/Player.cpp
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/Player.h
+ /usr/local/include/GLFW/glfw3.h
 CMakeFiles/main.dir/main.cpp.o
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/Image.h
  /Users/alexandra/Work/msu_cmc_cg_2021/template1_cpp/Player.h

@@ -31,6 +31,7 @@ struct Player
 
   bool Moved() const;
   bool Active = false;
+  bool Dead = false;
   void ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap, Action act, Image &background);
   void Draw(Image &screen, Image &background, MovementDir dir);
 
