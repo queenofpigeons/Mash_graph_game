@@ -219,7 +219,9 @@ int main(int argc, char** argv)
       {
         for(int x_draw = 0; x_draw < dead.Width(); ++x_draw)
         {
-          screenBuffer.PutPixel(WINDOW_WIDTH / 2 + x_draw, WINDOW_WIDTH - (WINDOW_WIDTH / 2 + y_draw), blend(background.GetPixel(WINDOW_WIDTH / 2 + x_draw, WINDOW_WIDTH / 2 + y_draw), dead.GetPixel(x_draw, y_draw)));
+          int new_x = WINDOW_WIDTH / 2 - dead.Width() / 2 + x_draw;
+          int new_y = WINDOW_HEIGHT/2 - dead.Height() / 2 + y_draw;
+          screenBuffer.PutPixel(new_x, new_y, blend(screenBuffer.GetPixel(new_x, new_y), dead.GetPixel(x_draw, dead.Height() - y_draw)));
         }
       }
     }
