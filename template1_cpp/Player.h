@@ -17,13 +17,21 @@ enum class MovementDir
   RIGHT
 };
 
+enum Action
+{
+  MOVE,
+  OPEN
+};
+
+
 struct Player
 {
   explicit Player(Point pos = {.x = 10, .y = 10}) :
                  coords(pos), old_coords(coords) {};
 
   bool Moved() const;
-  void ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap);
+  bool Active = false;
+  void ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap, Action act, Image &background);
   void Draw(Image &screen, Image &background, MovementDir dir);
 
 private:

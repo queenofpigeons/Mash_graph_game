@@ -44,20 +44,22 @@ void OnKeyboardPressed(GLFWwindow* window, int key, int scancode, int action, in
 	}
 }
 
-void processPlayerMovement(Player &player, MovementDir &dir, std::vector<std::vector<char>> &charMap)
+void processPlayerMovement(Player &player, MovementDir &dir, std::vector<std::vector<char>> &charMap, Image &background)
 {
   if (Input.keys[GLFW_KEY_W]) {
-    player.ProcessInput(MovementDir::UP, charMap);
+    player.ProcessInput(MovementDir::UP, charMap, Action::MOVE, background);
     dir = MovementDir::UP;
   } else if (Input.keys[GLFW_KEY_S]) {
-    player.ProcessInput(MovementDir::DOWN, charMap);
+    player.ProcessInput(MovementDir::DOWN, charMap, Action::MOVE, background);
     dir = MovementDir::DOWN;
   } if (Input.keys[GLFW_KEY_A]) {
-    player.ProcessInput(MovementDir::LEFT, charMap);
+    player.ProcessInput(MovementDir::LEFT, charMap, Action::MOVE, background);
     dir = MovementDir::LEFT;
   } else if (Input.keys[GLFW_KEY_D]) {
-    player.ProcessInput(MovementDir::RIGHT, charMap);
+    player.ProcessInput(MovementDir::RIGHT, charMap, Action::MOVE, background);
     dir = MovementDir::RIGHT;
+  } else if (Input.keys[GLFW_KEY_Q]) {
+    player.ProcessInput(MovementDir::DOWN, charMap, Action::OPEN, background);
   }
 }
 
@@ -115,6 +117,7 @@ int initGL()
   std::cout << "Controls: "<< std::endl;
   std::cout << "press right mouse button to capture/release mouse cursor  "<< std::endl;
   std::cout << "W, A, S, D - movement  "<< std::endl;
+  std::cout << "Stand in front of a chest and press Q to open it  "<< std::endl;
   std::cout << "press ESC to exit" << std::endl;
 
 	return 0;
@@ -173,6 +176,7 @@ int main(int argc, char** argv)
 
   Point starting_pos{.x = starting_x, .y = starting_y};
   Player player{starting_pos};
+  player.Active = true;
 
   glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);  GL_CHECK_ERRORS;
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); GL_CHECK_ERRORS;
@@ -186,7 +190,7 @@ int main(int argc, char** argv)
 		lastFrame = currentFrame;
     glfwPollEvents();
 
-    processPlayerMovement(player, dir, charMap);
+    processPlayerMovement(player, dir, charMap, background);
     player.Draw(screenBuffer, background, dir);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); GL_CHECK_ERRORS;

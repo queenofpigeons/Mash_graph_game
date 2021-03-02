@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <vector>
 
 Pixel blend(Pixel oldPixel, Pixel newPixel)
 {
@@ -19,6 +18,7 @@ Pixel blend(Pixel oldPixel, Pixel newPixel)
   return newPixel;
 }
 
+//TO-DO
 Pixel blendScreen(Pixel oldPixel, Pixel newPixel)
 {
   newPixel.r = newPixel.a / 255.0 * (newPixel.r - oldPixel.r) + oldPixel.r;
@@ -91,9 +91,14 @@ void drawTile(int x, int y, Image &tile, Image &background) {
   {
     for(int x_draw = 0; x_draw < tileSize; ++x_draw)
     {
-      background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, tile.GetPixel(x_draw, y_draw));
+      background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, blend(background.GetPixel(x * tileSize + x_draw, y * tileSize + y_draw), tile.GetPixel(x_draw, y_draw)));
     }
   }
+}
+
+void fadeToBlack(Image &screen, Image &background, std::string &text) {
+  int fade_time = 100;
+  for (int i = 0; i < fade_time; i++) {}
 }
 
 
@@ -101,6 +106,7 @@ void initLevel(const std::string &f_path, Image &background, int &starting_x, in
   Image Wall("../resources/wall.png");
   Image Floor("../resources/floor.png");
   Image Lava("../resources/lava.png");
+  Image ChestClosed("../resources/chest.png");
 
   std::ifstream input;
   input.open(f_path);
@@ -115,6 +121,10 @@ void initLevel(const std::string &f_path, Image &background, int &starting_x, in
       switch (line[i]) {
         case '#':
           drawTile(x, y, Wall, background);
+          break;
+        case 'C':
+          drawTile(x, y, Floor, background);
+          drawTile(x, y, ChestClosed, background);
           break;
         case ' ':
           drawTile(x, y, Lava, background);

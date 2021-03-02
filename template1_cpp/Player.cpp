@@ -10,51 +10,60 @@ bool Player::Moved() const
     return true;
 }
 
-void Player::ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap)
+void Player::ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap, Action act, Image &background)
 {
   int currTileX = this->coords.x / tileSize;
   int currTileY = this->coords.y / tileSize;
   int addX = this->coords.x % tileSize ? 1 : 0;
   int addY = this->coords.y % tileSize ? 1 : 0;
-  if (charMap[currTileX][currTileY] == '#')
-    return;
-  int move_dist = move_speed * 1;
-  switch(dir)
-  {
-    case MovementDir::UP:
-      if (charMap[currTileX][(coords.y + move_dist) / tileSize + addY] == '#')
-        return;
-      if (charMap[currTileX + addX][(coords.y + move_dist) / tileSize + addY] == '#')
-        return;
-      old_coords.y = coords.y;
-      coords.y += move_dist;
-      break;
-    case MovementDir::DOWN:
-      if (charMap[currTileX][(coords.y - move_dist) / tileSize] == '#')
-        return;
-      if (charMap[currTileX + addX][(coords.y - move_dist) / tileSize] == '#')
-        return;
-      old_coords.y = coords.y;
-      coords.y -= move_dist;
-      break;
-    case MovementDir::LEFT:
-      if (charMap[(coords.x - move_dist) / tileSize][currTileY] == '#')
-        return;
-      if (charMap[(coords.x - move_dist) / tileSize][currTileY + addY] == '#')
-        return;
-      old_coords.x = coords.x;
-      coords.x -= move_dist;
-      break;
-    case MovementDir::RIGHT:
-      if (charMap[(coords.x + move_dist) / tileSize + addX][currTileY] == '#')
-        return;
-      if (charMap[(coords.x + move_dist) / tileSize + addX][currTileY + addY] == '#')
-        return;
-      old_coords.x = coords.x;
-      coords.x += move_dist;
-      break;
-    default:
-      break;
+
+  if (act == Action::MOVE) {
+    if (charMap[currTileX][currTileY] == '#')
+      return;
+    int move_dist = move_speed * 1;
+    switch(dir)
+    {
+      case MovementDir::UP:
+        if (charMap[currTileX][(coords.y + move_dist) / tileSize + addY] == '#')
+          return;
+        if (charMap[currTileX + addX][(coords.y + move_dist) / tileSize + addY] == '#')
+          return;
+        old_coords.y = coords.y;
+        coords.y += move_dist;
+        break;
+      case MovementDir::DOWN:
+        if (charMap[currTileX][(coords.y - move_dist) / tileSize] == '#')
+          return;
+        if (charMap[currTileX + addX][(coords.y - move_dist) / tileSize] == '#')
+          return;
+        old_coords.y = coords.y;
+        coords.y -= move_dist;
+        break;
+      case MovementDir::LEFT:
+        if (charMap[(coords.x - move_dist) / tileSize][currTileY] == '#')
+          return;
+        if (charMap[(coords.x - move_dist) / tileSize][currTileY + addY] == '#')
+          return;
+        old_coords.x = coords.x;
+        coords.x -= move_dist;
+        break;
+      case MovementDir::RIGHT:
+        if (charMap[(coords.x + move_dist) / tileSize + addX][currTileY] == '#')
+          return;
+        if (charMap[(coords.x + move_dist) / tileSize + addX][currTileY + addY] == '#')
+          return;
+        old_coords.x = coords.x;
+        coords.x += move_dist;
+        break;
+      default:
+        break;
+    }
+  } else if (act == Action::OPEN) {
+    if (charMap[currTileX][currTileY + 1] != 'C')
+      return;
+    charMap[currTileX][currTileY + 1] = 'O';
+    Image ChestOpen("../resources/chest_open.png");
+    drawTile(currTileX, currTileY + 1, ChestOpen, background);
   }
 }
 
