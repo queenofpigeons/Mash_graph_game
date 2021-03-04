@@ -91,10 +91,22 @@ void drawTile(int x, int y, Image &tile, Image &background) {
   {
     for(int x_draw = 0; x_draw < tileSize; ++x_draw)
     {
-      background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, blend(background.GetPixel(x * tileSize + x_draw, y * tileSize + y_draw), tile.GetPixel(x_draw, y_draw)));
+      background.PutPixel(x * tileSize + x_draw, y * tileSize + y_draw, blend(background.GetPixel(x * tileSize + x_draw, y * tileSize + y_draw), tile.GetPixel(x_draw, tileSize - y_draw - 1)));
     }
   }
 }
+
+/*void DrawDeadBanner {
+  for(int y_draw = 0; y_draw < dead.Height(); ++y_draw)
+  {
+    for(int x_draw = 0; x_draw < dead.Width(); ++x_draw)
+    {
+      int new_x = WINDOW_WIDTH / 2 - dead.Width() / 2 + x_draw;
+      int new_y = WINDOW_HEIGHT/2 - dead.Height() / 2 + y_draw;
+      screenBuffer.PutPixel(new_x, new_y, blend(screenBuffer.GetPixel(new_x, new_y), dead.GetPixel(x_draw, dead.Height() - y_draw)));
+    }
+  }
+} */
 
 
 void initLevel(const std::string &f_path, Image &background, int &starting_x, int &starting_y, std::vector<std::vector<char>> &charMap) {
@@ -102,6 +114,7 @@ void initLevel(const std::string &f_path, Image &background, int &starting_x, in
   Image Floor("../resources/floor.png");
   Image Lava("../resources/lava.png");
   Image ChestClosed("../resources/chest.png");
+  Image Exit("../resources/exit.png");
 
   std::ifstream input;
   input.open(f_path);
@@ -129,6 +142,10 @@ void initLevel(const std::string &f_path, Image &background, int &starting_x, in
           starting_y = y * tileSize;
         case '.':
           drawTile(x, y, Floor, background);
+          break;
+        case 'x':
+          drawTile(x, y, Wall, background);
+          drawTile(x, y, Exit, background);
           break;
         default:
           break;

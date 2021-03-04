@@ -10,15 +10,26 @@ bool Player::Moved() const
     return true;
 }
 
-void Player::ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap, Action act, Image &background)
+void Player::ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charMap, Action act, Image &background, Image &screen)
 {
+  if (ChangeLvl)
+    return;
+
   int currTileX = this->coords.x / tileSize;
   int currTileY = this->coords.y / tileSize;
   int addX = this->coords.x % tileSize ? 1 : 0;
   int addY = this->coords.y % tileSize ? 1 : 0;
 
-  if (charMap[currTileX][currTileY] == ' ') {
+  if (charMap[currTileX][currTileY] == ' ' || charMap[currTileX + addX][currTileY + addY] == ' ' 
+      || charMap[currTileX + addX][currTileY] == ' ' || charMap[currTileX][currTileY + addY] == ' ') {
     this->Dead = true;
+    return;
+  }
+
+  if (charMap[currTileX][currTileY] == 'x' || charMap[currTileX + addX][currTileY + addY] == 'x' 
+      || charMap[currTileX + addX][currTileY] == 'x' || charMap[currTileX][currTileY + addY] == 'x') {
+    if (!ChangeLvl)
+      this->Level++;
     return;
   }
 
@@ -69,6 +80,7 @@ void Player::ProcessInput(MovementDir dir, std::vector<std::vector<char>> &charM
     charMap[currTileX][currTileY + 1] = 'O';
     Image ChestOpen("../resources/chest_open.png");
     drawTile(currTileX, currTileY + 1, ChestOpen, background);
+    drawTile(currTileX, currTileY + 1, ChestOpen, screen);
   }
 }
 
@@ -118,3 +130,10 @@ void Player::Draw(Image &screen, Image &background, MovementDir dir)
   }
 }
 
+void Player::SetStartingPosition(int x, int y) {
+  if (x < 0 || y < 0) {
+    return;
+  }
+  this->coords.x = x;
+  this->coords.y = y;
+}

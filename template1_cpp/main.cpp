@@ -45,22 +45,22 @@ void OnKeyboardPressed(GLFWwindow* window, int key, int scancode, int action, in
 	}
 }
 
-void processPlayerMovement(Player &player, MovementDir &dir, std::vector<std::vector<char>> &charMap, Image &background)
+void processPlayerMovement(Player &player, MovementDir &dir, std::vector<std::vector<char>> &charMap, Image &background, Image &screen)
 {
   if (Input.keys[GLFW_KEY_W]) {
-    player.ProcessInput(MovementDir::UP, charMap, Action::MOVE, background);
+    player.ProcessInput(MovementDir::UP, charMap, Action::MOVE, background, screen);
     dir = MovementDir::UP;
   } else if (Input.keys[GLFW_KEY_S]) {
-    player.ProcessInput(MovementDir::DOWN, charMap, Action::MOVE, background);
+    player.ProcessInput(MovementDir::DOWN, charMap, Action::MOVE, background, screen);
     dir = MovementDir::DOWN;
   } if (Input.keys[GLFW_KEY_A]) {
-    player.ProcessInput(MovementDir::LEFT, charMap, Action::MOVE, background);
+    player.ProcessInput(MovementDir::LEFT, charMap, Action::MOVE, background, screen);
     dir = MovementDir::LEFT;
   } else if (Input.keys[GLFW_KEY_D]) {
-    player.ProcessInput(MovementDir::RIGHT, charMap, Action::MOVE, background);
+    player.ProcessInput(MovementDir::RIGHT, charMap, Action::MOVE, background, screen);
     dir = MovementDir::RIGHT;
-  } else if (Input.keys[GLFW_KEY_Q]) {
-    player.ProcessInput(MovementDir::DOWN, charMap, Action::OPEN, background);
+  } else if (Input.keys[GLFW_KEY_E]) {
+    player.ProcessInput(MovementDir::DOWN, charMap, Action::OPEN, background, screen);
   }
 }
 
@@ -118,7 +118,7 @@ int initGL()
   std::cout << "Controls: "<< std::endl;
   std::cout << "press right mouse button to capture/release mouse cursor  "<< std::endl;
   std::cout << "W, A, S, D - movement  "<< std::endl;
-  std::cout << "Stand in front of a chest and press Q to open it  "<< std::endl;
+  std::cout << "Stand in front of a chest and press E to open it  "<< std::endl;
   std::cout << "press ESC to exit" << std::endl;
 
 	return 0;
@@ -156,7 +156,7 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
   // make the window smaller due to high resolution display
-  GLFWwindow*  window = glfwCreateWindow(WINDOW_WIDTH , WINDOW_HEIGHT , "task1 base project", nullptr, nullptr);
+  GLFWwindow*  window = glfwCreateWindow(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, "task1 base project", nullptr, nullptr);
 	if (window == nullptr)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -182,8 +182,9 @@ int main(int argc, char** argv)
 	//Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
 
 	Image img("../resources/tex.png");
-  Image playerImg("../resources/tile007.png");
+  Image level2("../resources/level2.png");
   Image dead("../resources/dead.png");
+  Image GG("../resources/gg.png");
 	Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
   Image background(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
@@ -208,12 +209,13 @@ int main(int argc, char** argv)
   //game loop
 	while (!glfwWindowShouldClose(window))
 	{
+
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
     glfwPollEvents();
 
-    processPlayerMovement(player, dir, charMap, background);
+    processPlayerMovement(player, dir, charMap, background, screenBuffer);
     if (player.Dead) {
       for(int y_draw = 0; y_draw < dead.Height(); ++y_draw)
       {
@@ -227,10 +229,51 @@ int main(int argc, char** argv)
     }
     player.Draw(screenBuffer, background, dir);
 
+
+    if (player.Level == Level2Picture) {
+      player.ChangeLvl = true;
+      for (int i = 0; i < background.Width() ; i++) {
+        for (int j = 1; j <= background.Height(); j++) {
+          screenBuffer.PutPixel(i, background.Height() - j, level2.GetPixel(i, j));
+        }
+      }
+      initLevel("../resources/lvl2.txt", background, starting_x, starting_y, charMap);
+    }
+
+    if (player.Level == Level2Transition) {
+      for (int i = 0; i < background.Width() ; i++) {
+        for (int j = 1; j <= background.Height(); j++) {
+          screenBuffer.PutPixel(i, j, background.GetPixel(i, j));
+        }
+      }
+      player.SetStartingPosition(starting_x, starting_y);
+      player.Level++;
+      player.ChangeLvl = false;
+    }
+
+    if (player.Level == GameEnd) {
+      player.ChangeLvl = true;
+      for (int i = 0; i < background.Width() ; i++) {
+        for (int j = 1; j <= background.Height(); j++) {
+          screenBuffer.PutPixel(i, background.Height() - j, GG.GetPixel(i, j));
+        }
+      }
+    }
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); GL_CHECK_ERRORS;
     glDrawPixels (WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, screenBuffer.Data()); GL_CHECK_ERRORS;
 
 		glfwSwapBuffers(window);
+
+    if (player.Level == Level2Picture) {
+      double startingTime = glfwGetTime();
+      while(1) {
+        double currentTime = glfwGetTime();
+        if (currentTime - startingTime > 2)
+          break;
+      }
+      player.Level++;
+    }
 	}
 
 	glfwTerminate();
