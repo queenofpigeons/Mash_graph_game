@@ -11,6 +11,8 @@ constexpr int lvlHeight = 40;
 constexpr int frames = 3;
 constexpr int frame_max = 29999;
 constexpr int frame_divider = 10000;
+constexpr int fade_frames = 10;
+
 
 struct Pixel
 {

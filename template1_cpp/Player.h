@@ -26,6 +26,7 @@ enum Action
 enum LevelState
 {
   Level1,
+  Level1Fade,
   Level2Picture,
   Level2Transition,
   Level2,

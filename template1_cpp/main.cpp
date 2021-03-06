@@ -206,6 +206,7 @@ int main(int argc, char** argv)
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); GL_CHECK_ERRORS;
 
   MovementDir dir = MovementDir::DOWN;
+  int t = 0;
   //game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -229,9 +230,20 @@ int main(int argc, char** argv)
     }
     player.Draw(screenBuffer, background, dir);
 
+    if (player.Level == Level1Fade) {
+      player.ChangeLvl = true;
+      for (int i = 0; i < background.Width() ; i++) {
+        for (int j = 1; j <= background.Height(); j++) {
+          Pixel p = background.GetPixel(i, j);
+          p.b = p.b - p.b / fade_frames * t;
+          p.r = p.r - p.r / fade_frames * t;
+          p.g = p.g - p.g / fade_frames * t;
+          screenBuffer.PutPixel(i, j, p);
+        }
+      }
+    }
 
     if (player.Level == Level2Picture) {
-      player.ChangeLvl = true;
       for (int i = 0; i < background.Width() ; i++) {
         for (int j = 1; j <= background.Height(); j++) {
           screenBuffer.PutPixel(i, background.Height() - j, level2.GetPixel(i, j));
@@ -273,6 +285,18 @@ int main(int argc, char** argv)
           break;
       }
       player.Level++;
+    }
+    if (player.Level == Level1Fade) {
+      t++;
+      double startingTime = glfwGetTime();
+      while(1) {
+        double currentTime = glfwGetTime();
+        if (currentTime - startingTime > 5 / fade_frames)
+          break;
+      }
+      if (t == fade_frames) {
+        player.Level++;
+      }
     }
 	}
 
