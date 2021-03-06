@@ -9,8 +9,8 @@ constexpr int tileSize = 32;
 constexpr int lvlWidth = 40;
 constexpr int lvlHeight = 40;
 constexpr int frames = 3;
-constexpr int frame_max = 14;
-constexpr int frame_divider = 5;
+constexpr int frame_max = 29999;
+constexpr int frame_divider = 10000;
 
 struct Pixel
 {
