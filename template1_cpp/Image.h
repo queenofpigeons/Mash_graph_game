@@ -8,6 +8,9 @@
 constexpr int tileSize = 32;
 constexpr int lvlWidth = 40;
 constexpr int lvlHeight = 40;
+constexpr int frames = 3;
+constexpr int frame_max = 14;
+constexpr int frame_divider = 5;
 
 struct Pixel
 {
@@ -24,6 +27,7 @@ struct Image
 {
   explicit Image(const std::string &a_path);
   Image(int a_width, int a_height, int a_channels);
+  //Image(int a_width = 32, int a_height = 32, int a_channels = 4);
 
   int Save(const std::string &a_path);
 

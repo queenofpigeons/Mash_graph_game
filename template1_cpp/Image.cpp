@@ -96,25 +96,13 @@ void drawTile(int x, int y, Image &tile, Image &background) {
   }
 }
 
-/*void DrawDeadBanner {
-  for(int y_draw = 0; y_draw < dead.Height(); ++y_draw)
-  {
-    for(int x_draw = 0; x_draw < dead.Width(); ++x_draw)
-    {
-      int new_x = WINDOW_WIDTH / 2 - dead.Width() / 2 + x_draw;
-      int new_y = WINDOW_HEIGHT/2 - dead.Height() / 2 + y_draw;
-      screenBuffer.PutPixel(new_x, new_y, blend(screenBuffer.GetPixel(new_x, new_y), dead.GetPixel(x_draw, dead.Height() - y_draw)));
-    }
-  }
-} */
-
-
 void initLevel(const std::string &f_path, Image &background, int &starting_x, int &starting_y, std::vector<std::vector<char>> &charMap) {
   Image Wall("../resources/wall.png");
   Image Floor("../resources/floor.png");
   Image Lava("../resources/lava.png");
   Image ChestClosed("../resources/chest.png");
   Image Exit("../resources/exit.png");
+  Image Door("../resources/door.png");
 
   std::ifstream input;
   input.open(f_path);
@@ -146,6 +134,10 @@ void initLevel(const std::string &f_path, Image &background, int &starting_x, in
         case 'x':
           drawTile(x, y, Wall, background);
           drawTile(x, y, Exit, background);
+          break;
+        case 'D':
+          drawTile(x, y, Wall, background);
+          drawTile(x, y, Door, background);
           break;
         default:
           break;

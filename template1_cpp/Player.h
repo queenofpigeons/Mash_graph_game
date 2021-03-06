@@ -52,7 +52,7 @@ private:
   Point old_coords {.x = 10, .y = 10};
   Pixel color {.r = 255, .g = 0, .b = 255, .a = 255};
   int move_speed = 4;
-
+  int frame;
 };
 
 #endif //MAIN_PLAYER_H

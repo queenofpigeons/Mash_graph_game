@@ -14,7 +14,7 @@ struct InputState
   bool keys[1024]{}; //массив состояний кнопок - нажата/не нажата
   GLfloat lastX = 400, lastY = 300; //исходное положение мыши
   bool firstMouse = true;
-  bool captureMouse         = true;  // Мышка захвачена нашим приложением или нет?
+  bool captureMouse         = true;  // Мышка захвачена нашяим приложением или нет?
   bool capturedMouseJustNow = false;
 } static Input;
 
@@ -60,7 +60,7 @@ void processPlayerMovement(Player &player, MovementDir &dir, std::vector<std::ve
     player.ProcessInput(MovementDir::RIGHT, charMap, Action::MOVE, background, screen);
     dir = MovementDir::RIGHT;
   } else if (Input.keys[GLFW_KEY_E]) {
-    player.ProcessInput(MovementDir::DOWN, charMap, Action::OPEN, background, screen);
+    player.ProcessInput(dir, charMap, Action::OPEN, background, screen);
   }
 }
 
