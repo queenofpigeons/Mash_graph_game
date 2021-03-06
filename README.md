@@ -30,5 +30,5 @@
 
 ## Запуск на macOS
 Изначально игра писалась для macOS, поэтому тестирование проводилось на данной ОС. 
-Для запуска игры на macOS необходимо заменить строку `<target_link_libraries(main LINK_PUBLIC ${OPENGL_gl_LIBRARY} glfw rt dl)>` на строку `<target_link_libraries(main LINK_PUBLIC ${OPENGL_gl_LIBRARY} glfw rt dl)>` в файле CMakeLists.txt
+Для запуска игры на macOS необходимо заменить строку `<target_link_libraries(main LINK_PUBLIC ${OPENGL_gl_LIBRARY} glfw rt dl)>` на строку `<target_link_libraries(main LINK_PUBLIC ${OPENGL_gl_LIBRARY} glfw dl)>` в файле CMakeLists.txt
 В зависимости от монитора, окно с уровнем может быть в два раза больше, чем сам уровень.
