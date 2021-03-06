@@ -30,6 +30,7 @@ enum LevelState
   Level2Picture,
   Level2Transition,
   Level2,
+  Level2Fade,
   GameEnd
 };
 

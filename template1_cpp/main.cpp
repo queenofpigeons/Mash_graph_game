@@ -230,7 +230,7 @@ int main(int argc, char** argv)
     }
     player.Draw(screenBuffer, background, dir);
 
-    if (player.Level == Level1Fade) {
+    if (player.Level == Level1Fade || player.Level == Level2Fade) {
       player.ChangeLvl = true;
       for (int i = 0; i < background.Width() ; i++) {
         for (int j = 1; j <= background.Height(); j++) {
@@ -286,7 +286,7 @@ int main(int argc, char** argv)
       }
       player.Level++;
     }
-    if (player.Level == Level1Fade) {
+    if (player.Level == Level1Fade || player.Level == Level2Fade) {
       t++;
       double startingTime = glfwGetTime();
       while(1) {
@@ -294,7 +294,8 @@ int main(int argc, char** argv)
         if (currentTime - startingTime > 5 / fade_frames)
           break;
       }
-      if (t == fade_frames) {
+      if (t == fade_frames || t == fade_frames * 10) {
+        //t = 0;
         player.Level++;
       }
     }
